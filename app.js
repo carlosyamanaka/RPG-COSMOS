@@ -2,7 +2,7 @@
 var express = require('express');
 var path = require('path');
 
-var index_router = require('./routes/index_routes')
+var usuario_router = require('./routes/usuario_routes')
 var missao_router = require('./routes/missao_routes')
 var install_router = require('./routes/install_routes')
 var app = express();
@@ -12,7 +12,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
 //Routers
-app.use('/', index_router)
+app.use('/usuario', usuario_router)
 app.use('/missao', missao_router)
 app.use('/install', install_router)
 
