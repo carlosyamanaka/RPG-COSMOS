@@ -13,22 +13,6 @@ const MissaoUsuario = sequelize.define(
         autoIncrement: true,
         allowNull: false,
     },
-    // id_missao: {
-    //     type: DataTypes.INTEGER,
-    //     allowNull: false,
-    //     references: {
-    //         model: 'Missao',
-    //         key: 'id_missao',
-    //     }
-    // },
-    // email_usuario: {
-    //     type: DataTypes.STRING,
-    //     allowNull: false,
-    //     references: {
-    //         model: 'Usuario',
-    //         key: 'email_usuario',
-    //     }
-    // },
     eh_mestre: DataTypes.BOOLEAN,
 }, { timestamps: false },
 )
@@ -72,36 +56,32 @@ exports.install = async (req, res) => {
             { nome: 'Caos vivo', data: '2025-09-17', dificuldade: 1, id_categoria: 5, recompensa_em: 3, recompensa_ec: 3, relatorio: 'Missao de contratempo em que precisavam desarmar uma bomba em 1 hora' },
         ]);
 
-        await missoes[0].addUsuario(usuarios[0], { through: { eh_mestre: false } })
+        //Relação N:M
+        await missoes[0].addUsuario(usuarios[0], { through: { eh_mestre: true } })
+        await missoes[0].addUsuario(usuarios[1], { through: { eh_mestre: false } })
+        await missoes[0].addUsuario(usuarios[2], { through: { eh_mestre: false } })
+        await missoes[1].addUsuario(usuarios[3], { through: { eh_mestre: false } })
+        
+        await missoes[1].addUsuario(usuarios[0], { through: { eh_mestre: true } })
         await missoes[1].addUsuario(usuarios[1], { through: { eh_mestre: false } })
-        // await usuario[0].addMissao(missoes[0], { through: { eh_mestre: false } })
+        await missoes[1].addUsuario(usuarios[2], { through: { eh_mestre: false } })
+        await missoes[1].addUsuario(usuarios[4], { through: { eh_mestre: false } })
 
-        // await MissaoUsuario.bulkCreate([
-        //     { id_missao: 1, email_usuario: 1, eh_mestre: true },
-        //     { id_missao: 1, email_usuario: 2, eh_mestre: false },
-        //     { id_missao: 1, email_usuario: 3, eh_mestre: false },
-        //     { id_missao: 1, email_usuario: 4, eh_mestre: false },
+        await missoes[2].addUsuario(usuarios[0], { through: { eh_mestre: true } })
+        await missoes[2].addUsuario(usuarios[1], { through: { eh_mestre: false } })
+        await missoes[2].addUsuario(usuarios[3], { through: { eh_mestre: false } })
+        await missoes[2].addUsuario(usuarios[4], { through: { eh_mestre: false } })
 
-        //     { id_missao: 2, email_usuario: 2, eh_mestre: false },
-        //     { id_missao: 2, email_usuario: 3, eh_mestre: false },
-        //     { id_missao: 2, email_usuario: 1, eh_mestre: false },
-        //     { id_missao: 2, email_usuario: 0, eh_mestre: true },
+        await missoes[3].addUsuario(usuarios[0], { through: { eh_mestre: true } })
+        await missoes[3].addUsuario(usuarios[2], { through: { eh_mestre: false } })
+        await missoes[3].addUsuario(usuarios[3], { through: { eh_mestre: false } })
+        await missoes[3].addUsuario(usuarios[4], { through: { eh_mestre: false } })
 
-        //     { id_missao: 3, email_usuario: 3, eh_mestre: true },
-        //     { id_missao: 3, email_usuario: 4, eh_mestre: false },
-        //     { id_missao: 3, email_usuario: 2, eh_mestre: false },
-        //     { id_missao: 3, email_usuario: 1, eh_mestre: false },
+        await missoes[4].addUsuario(usuarios[0], { through: { eh_mestre: true } })
+        await missoes[4].addUsuario(usuarios[1], { through: { eh_mestre: false } })
+        await missoes[4].addUsuario(usuarios[2], { through: { eh_mestre: false } })
+        await missoes[4].addUsuario(usuarios[3], { through: { eh_mestre: false } })
 
-        //     { id_missao: 0, email_usuario: 0, eh_mestre: false },
-        //     { id_missao: 0, email_usuario: 2, eh_mestre: false },
-        //     { id_missao: 0, email_usuario: 3, eh_mestre: false },
-        //     { id_missao: 0, email_usuario: 1, eh_mestre: true },
-
-        //     { id_missao: 4, email_usuario: 2, eh_mestre: true },
-        //     { id_missao: 4, email_usuario: 3, eh_mestre: false },
-        //     { id_missao: 4, email_usuario: 0, eh_mestre: false },
-        //     { id_missao: 4, email_usuario: 4, eh_mestre: false },
-        // ]);
 
         res.status(201).json({ message: 'Banco de dados criado e usuário administrador inserido!' });
     } catch (error) {

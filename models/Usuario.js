@@ -26,10 +26,12 @@ Usuario.init({
     role: {
         type: DataTypes.STRING,
         allowNull: false,
+        defaultValue: 'player',
     },
     data_ingresso_mestre: {
         type: DataTypes.DATE,
         allowNull: true,
+        defaultValue: null
     },
     quantidade_missoes_mestradas: {
         type: DataTypes.INTEGER,
