@@ -36,4 +36,38 @@ exports.login_usuario = async (req, res) => {
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
-}
+};
+
+exports.update_usuario = async (req, res) => {
+    const { email_usuario } = req.params; //Pega o email do usuario que quer alterar
+    const { senha, saldo_em, saldo_ec, quantidade_missoes_mestradas, saldo_pm, data_ingresso_mestre } = req.body; //Novos dados que serão atualizados no update
+    
+    try {
+        const usuario = await Usuario.findByPk(email_usuario);
+
+        if (!usuario) {
+            return res.status(404).json({ error: 'Usuário não encontrado' });
+        }
+
+        if (email_usuario != req.usuario.email_usuario) { //Se o usuario estiver tentando se atualizar, ele irá conseguir
+            if (req.usuario.role != 'admin') { //Se não for adm não pode atualizar os outros
+                return res.status(401).json({ error: 'Não autorizado' });
+            }
+        }
+
+        //Utilização do || para reatribuir, se for passado um novo valor, ele irá atualizar, se não, ele manterá o antigo
+        usuario.senha = senha || usuario.senha;
+        usuario.saldo_em = saldo_em || usuario.saldo_em;
+        usuario.saldo_ec = saldo_ec || usuario.saldo_ec;
+        usuario.saldo_pm = saldo_pm || usuario.saldo_pm;
+        usuario.quantidade_missoes_mestradas = quantidade_missoes_mestradas || usuario.quantidade_missoes_mestradas;
+        usuario.data_ingresso_mestre = data_ingresso_mestre || usuario.data_ingresso_mestre;
+
+        await usuario.save();
+
+        res.json({ usuario: usuario, message: 'Usuário atualizado com sucesso' });
+
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+};
