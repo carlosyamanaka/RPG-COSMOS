@@ -29,7 +29,7 @@ exports.install = async (req, res) => {
         await sequelize.sync({ force: true }); //Cria o banco de dados
 
         //Usuário adm
-        const usuario = await Usuario.create({ email_usuario: 'admin', senha: 'admin', saldo_em: 0, saldo_ec: 0, role: 'admin', data_ingresso_mestre: null, quantidade_missoes_mestradas: 0, saldo_pm: 0 });
+        const usuario_adm = await Usuario.create({ email_usuario: 'admin@gmail.com', senha: 'admin', saldo_em: 0, saldo_ec: 0, role: 'admin', data_ingresso_mestre: null, quantidade_missoes_mestradas: 0, saldo_pm: 0 });
 
         //Popular o banco
         const usuarios = await Usuario.bulkCreate([
