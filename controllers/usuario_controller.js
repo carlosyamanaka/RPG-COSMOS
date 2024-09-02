@@ -1,8 +1,9 @@
-const Categoria = require('../models/Categoria');
+
 const Missao = require('../models/Missao');
 const Usuario = require('../models/Usuario');
 const jwt = require('jsonwebtoken');
 const dotenv = require('dotenv');
+const MissaoUsuario = require('./install_controller');
 
 dotenv.config();
 
@@ -41,7 +42,7 @@ exports.login_usuario = async (req, res) => {
 exports.update_usuario = async (req, res) => {
     const { email_usuario } = req.params; //Pega o email do usuario que quer alterar
     const { senha, saldo_em, saldo_ec, quantidade_missoes_mestradas, saldo_pm, data_ingresso_mestre } = req.body; //Novos dados que serão atualizados no update
-    
+
     try {
         const usuario = await Usuario.findByPk(email_usuario);
 
@@ -66,6 +67,33 @@ exports.update_usuario = async (req, res) => {
         await usuario.save();
 
         res.json({ usuario: usuario, message: 'Usuário atualizado com sucesso' });
+
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+};
+
+
+exports.delete_usuario = async (req, res) => {
+    const { email_usuario } = req.params; //Pega o email do usuario que quer alterar
+
+    try {
+        const usuario = await Usuario.findByPk(email_usuario);
+
+        if (!usuario) {
+            return res.status(404).json({ error: 'Usuário não encontrado' });
+        }
+
+        if (email_usuario != req.usuario.email_usuario) { //Se o usuario estiver tentando se atualizar, ele irá conseguir
+            if (req.usuario.role != 'admin') { //Se não for adm não pode atualizar os outros
+                return res.status(401).json({ error: 'Não autorizado' });
+            }
+        }
+
+        await usuario.removeMissao()
+        await usuario.destroy();
+
+        res.json({ usuario: usuario, message: 'Usuário apagado com sucesso' });
 
     } catch (error) {
         res.status(500).json({ error: error.message });
