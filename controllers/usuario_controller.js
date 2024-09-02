@@ -3,14 +3,18 @@ const Missao = require('../models/Missao');
 const Usuario = require('../models/Usuario');
 const jwt = require('jsonwebtoken');
 const dotenv = require('dotenv');
-const MissaoUsuario = require('./install_controller');
 
 dotenv.config();
 
 exports.register_usuario = async (req, res) => {
+    const { email_usuario, senha } = req.body;
+
     try {
-        const { email_usuario, senha } = req.body;
-        const usuario = await Usuario.create({ email_usuario, senha });
+        const usuario = await Usuario.findOne({ where: { email_usuario, senha } });
+        if (usuario) {
+            return res.status(401).json({ error: 'Já existe um usuário com esse email' });
+        }
+        await Usuario.create({ email_usuario, senha });
 
         res.status(201).json(usuario);
 
@@ -73,6 +77,14 @@ exports.update_usuario = async (req, res) => {
     }
 };
 
+exports.get_all_usuarios = async (req, res) => {
+    try {
+        const usuario = await Usuario.findAll();
+        res.status(201).json(usuario);
+    } catch (error) {
+        res.status(400).json({ error: error.message });
+    }
+}
 
 exports.delete_usuario = async (req, res) => {
     const { email_usuario } = req.params; //Pega o email do usuario que quer alterar
@@ -84,7 +96,7 @@ exports.delete_usuario = async (req, res) => {
             return res.status(404).json({ error: 'Usuário não encontrado' });
         }
 
-        if (email_usuario != req.usuario.email_usuario) { //Se o usuario estiver tentando se atualizar, ele irá conseguir
+        if (email_usuario != req.usuario.email_usuario) { //Se o usuario estiver tentando se deletar, ele irá conseguir
             if (req.usuario.role != 'admin') { //Se não for adm não pode atualizar os outros
                 return res.status(401).json({ error: 'Não autorizado' });
             }
@@ -97,5 +109,48 @@ exports.delete_usuario = async (req, res) => {
 
     } catch (error) {
         res.status(500).json({ error: error.message });
+    }
+};
+
+exports.delete_usuario_by_admin = async (req, res) => {
+    const { email_usuario } = req.params; //Pega o email do usuario que quer alterar
+
+    try {
+        if (req.usuario.role != 'admin') {
+            return res.status(401).json({ error: 'Não autorizado' })
+        }
+
+        const usuario = await Usuario.findByPk(email_usuario);
+
+        if (!usuario) {
+            return res.status(404).json({ error: 'Usuário não encontrado' });
+        }
+
+        await usuario.removeMissao()
+        await usuario.destroy();
+
+        res.json({ usuario: usuario, message: 'Usuário apagado com sucesso' });
+
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+};
+
+exports.register_admin = async (req, res) => {
+    try {
+        if (req.usuario.role !== 'admin') { //Verifica se está logado como admin
+            return res.status(401).json({ error: 'Não autorizado' });
+        }
+
+        const { email_usuario, senha } = req.body;
+        const usuario = await Usuario.findOne({ where: { email_usuario, senha } });
+        if (usuario) {
+            return res.status(401).json({ error: 'Já existe um administrador com esse email' });
+        }
+
+        const user = await Usuario.create({ email_usuario, senha, role: 'admin' });
+        res.status(201).json(user);
+    } catch (error) {
+        res.status(400).json({ error: error.message });
     }
 };
