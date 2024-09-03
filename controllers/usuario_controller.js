@@ -77,14 +77,6 @@ exports.update_usuario = async (req, res) => {
     }
 };
 
-exports.get_all_usuarios = async (req, res) => {
-    try {
-        const usuario = await Usuario.findAll();
-        res.status(201).json(usuario);
-    } catch (error) {
-        res.status(400).json({ error: error.message });
-    }
-}
 
 exports.delete_usuario = async (req, res) => {
     const { email_usuario } = req.params; //Pega o email do usuario que quer alterar
@@ -148,9 +140,43 @@ exports.register_admin = async (req, res) => {
             return res.status(401).json({ error: 'Já existe um administrador com esse email' });
         }
 
-        const user = await Usuario.create({ email_usuario, senha, role: 'admin' });
-        res.status(201).json(user);
+        const usuario_novo = await Usuario.create({ email_usuario, senha, role: 'admin' });
+        res.status(201).json(usuario_novo);
     } catch (error) {
         res.status(400).json({ error: error.message });
     }
 };
+
+exports.get_usuario = async (req, res) => {
+    const { email_usuario } = req.params; //Pega o email do usuario que quer puxar as informações
+
+    try {
+        const usuario = await Usuario.findByPk(email_usuario);
+
+        res.status(200).json(usuario);
+    } catch (error) {
+        res.status(201).json({ error: error.message });
+    }
+}
+
+exports.get_all_usuarios = async (req, res) => {
+
+    const { limite, pagina } = req.query;
+
+    // Validação dos parâmetros
+    const valor_limite = parseInt(limite);
+    const valor_pagina = parseInt(pagina);
+
+    if (![5, 10, 30].includes(valor_limite) || valor_pagina <= 0) {
+        return res.status(400).json({
+            error: 'O limite deve ser 5, 10 ou 30 e a página deve ser maior que 0.'
+        });
+    }
+
+    try {
+        const usuario = await Usuario.findAll({ limit: limite, offset: (pagina - 1) * limite });
+        res.status(201).json(usuario);
+    } catch (error) {
+        res.status(400).json({ error: error.message });
+    }
+}
