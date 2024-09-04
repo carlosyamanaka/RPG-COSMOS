@@ -51,7 +51,7 @@ exports.update_categoria = async (req, res) => {
         }
 
         await categoria.update({ nome });
-        res.status(200).json({ message: 'Produto atualizado com sucesso!', categoria });
+        res.status(200).json({ message: 'Categoria atualizada com sucesso!', categoria });
     } catch (error) {
         res.status(400).json({ error: error.message });
     }
@@ -72,7 +72,7 @@ exports.delete_categoria = async (req, res) => {
         }
 
         await categoria.destroy();
-        res.status(200).json({ message: 'Produto apagado com sucesso!', categoria });
+        res.status(200).json({ message: 'Categoria apagada com sucesso!', categoria });
     } catch (error) {
         res.status(400).json({ error: error.message });
     }

@@ -12,7 +12,7 @@ const MissoesModel = require('../models/Missao')
 //     res.json({ status: true, task: req.task })
 // })
 
-router.post("/", authenticate, missao_controller.criar_missao);
+router.post("/create", authenticate, missao_controller.criar_missao);
 
 // router.put("/:id", authenticate, validaNome, getMissao, (req, res) => {
 //     res.json({ status: true, task: MissoesModel.update(req.task.id, req.nome) })
