@@ -77,6 +77,32 @@ exports.update_usuario = async (req, res) => {
     }
 };
 
+exports.update_role = async (req, res) => {
+    const { email_usuario } = req.params; //Pega o email do usuario que quer alterar
+    const { role } = req.body; //Nova role
+
+    try {
+        const usuario = await Usuario.findByPk(email_usuario);
+
+        if (!usuario) {
+            return res.status(404).json({ error: 'Usuário não encontrado' });
+        }
+
+        if (req.usuario.role != 'admin') { //Se não for adm não pode atualizar a role
+            return res.status(401).json({ error: 'Não autorizado' });
+        }
+
+        //Reatribui a nova role ou apenas deixa a antiga
+        usuario.role = role || usuario.role;
+        await usuario.save();
+
+        res.json({ usuario: usuario, message: 'Usuário atualizado com sucesso' });
+
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+};
+
 
 exports.delete_usuario = async (req, res) => {
     const { email_usuario } = req.params; //Pega o email do usuario que quer alterar

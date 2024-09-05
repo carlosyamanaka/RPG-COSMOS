@@ -6,6 +6,7 @@ const authenticate = require('../middleware/authenticate')
 router.post("/register", usuario_controller.register_usuario);
 router.get("/login", usuario_controller.login_usuario);
 router.put("/update/:email_usuario", authenticate, usuario_controller.update_usuario);
+router.put("/updateRole/:email_usuario", authenticate, usuario_controller.update_role);
 router.delete("/delete/:email_usuario", authenticate, usuario_controller.delete_usuario);
 
 router.delete("/deleteByAdmin/:email_usuario", authenticate, usuario_controller.delete_usuario_by_admin);

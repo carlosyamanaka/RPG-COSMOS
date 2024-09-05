@@ -12,7 +12,7 @@ exports.criar_missao = async (req, res) => {
         } else if (req.usuario.role == 'mestre') {
             //Se um mestre criar, ele é atribuido para ser o mestre da missão
             const { nome, data, dificuldade, id_categoria, recompensa_em, recompensa_ec, relatorio } = req.body;
-            const { email_usuario } = req.usuario.email;
+            const { email_usuario } = req.usuario.email_usuario;
 
             const missao = await Missao.create({ nome, data, dificuldade, id_categoria, recompensa_em, recompensa_ec, relatorio, email_usuario });
             res.status(201).json({ message: 'Missão criada com sucesso!', missao });
