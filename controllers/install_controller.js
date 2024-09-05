@@ -33,7 +33,7 @@ exports.install = async (req, res) => {
 
         //Popular o banco
         const usuarios = await Usuario.bulkCreate([
-            { email_usuario: 'j1@gmail.com', senha: 'jogador1', saldo_em: 10, saldo_ec: 10, role: 'mestre', data_ingresso_mestre: '1980-01-01', quantidade_missoes_mestradas: 3, saldo_pm: 9 },
+            { email_usuario: 'mestre@gmail.com', senha: 'mestre', saldo_em: 10, saldo_ec: 10, role: 'mestre', data_ingresso_mestre: '1980-01-01', quantidade_missoes_mestradas: 3, saldo_pm: 9 },
             { email_usuario: 'j2@gmail.com', senha: 'jogador2', saldo_em: 10, saldo_ec: 10, role: 'player', data_ingresso_mestre: null, quantidade_missoes_mestradas: 0, saldo_pm: 0 },
             { email_usuario: 'j3@gmail.com', senha: 'jogador3', saldo_em: 10, saldo_ec: 10, role: 'player', data_ingresso_mestre: null, quantidade_missoes_mestradas: 0, saldo_pm: 0 },
             { email_usuario: 'j4@gmail.com', senha: 'jogador4', saldo_em: 10, saldo_ec: 10, role: 'player', data_ingresso_mestre: null, quantidade_missoes_mestradas: 0, saldo_pm: 0 },

@@ -14,9 +14,10 @@ exports.register_usuario = async (req, res) => {
         if (usuario) {
             return res.status(401).json({ error: 'Já existe um usuário com esse email' });
         }
-        await Usuario.create({ email_usuario, senha });
 
-        res.status(201).json(usuario);
+        const novo_usuario = await Usuario.create({ email_usuario, senha });
+
+        res.status(200).json(novo_usuario);
 
     } catch (error) {
         res.status(400).json({ error: error.message });

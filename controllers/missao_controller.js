@@ -5,16 +5,37 @@ exports.criar_missao = async (req, res) => {
     try {
         if (req.usuario.role == 'admin') {
             //Se um adm criar, ele define o mestre da missão
-            const { nome, data, dificuldade, id_categoria, recompensa_em, recompensa_ec, relatorio, email_usuario } = req.body;
+            const { nome, data, dificuldade, id_categoria, recompensa_em, recompensa_ec, relatorio, email_mestre, email_participantes } = req.body;
 
-            const missao = await Missao.create({ nome, data, dificuldade, id_categoria, recompensa_em, recompensa_ec, relatorio, email_usuario });
+            //Cria a missão no banco de dados
+            const missao = await Missao.create({ nome, data, dificuldade, id_categoria, recompensa_em, recompensa_ec, relatorio, email_mestre });
+
+            //Adiciona o mestre na tabela MissaoUsuarios
+            missao.addUsuario(email_mestre, { through: { eh_mestre: true } })
+
+            //Adiciona os participantes na tabela MissaoUsuarios
+            await email_participantes.map((participante) => {
+                missao.addUsuario(participante, { through: { eh_mestre: false } })
+            });
+
             res.status(201).json({ message: 'Missão criada com sucesso!', missao });
         } else if (req.usuario.role == 'mestre') {
             //Se um mestre criar, ele é atribuido para ser o mestre da missão
-            const { nome, data, dificuldade, id_categoria, recompensa_em, recompensa_ec, relatorio } = req.body;
-            const { email_usuario } = req.usuario.email_usuario;
+            const { nome, data, dificuldade, id_categoria, recompensa_em, recompensa_ec, relatorio, email_participantes } = req.body;
+            
+            const email_mestre = req.usuario.email_usuario;
+            
+            //Cria a missão no banco
+            const missao = await Missao.create({ nome, data, dificuldade, id_categoria, recompensa_em, recompensa_ec, relatorio, email_mestre });
 
-            const missao = await Missao.create({ nome, data, dificuldade, id_categoria, recompensa_em, recompensa_ec, relatorio, email_usuario });
+            //Adiciona o mestre na tabela MissaoUsuarios
+            missao.addUsuario(email_mestre, { through: { eh_mestre: true } })
+
+            //Adiciona os participantes na tabela MissaoUsuarios
+            await Promise.all(email_participantes.map(async (participante) => {
+                await missao.addUsuario(participante, { through: { eh_mestre: false } });
+            }));
+
             res.status(201).json({ message: 'Missão criada com sucesso!', missao });
         } else {
             //Apenas admins e mestres podem criar missões
