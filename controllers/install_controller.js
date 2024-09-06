@@ -5,7 +5,7 @@ const Missao = require('../models/Missao');
 const Usuario = require('../models/Usuario');
 
 //Ligação N:N Missão - Usuário
-const MissaoUsuario = sequelize.define(
+exports.MissaoUsuario = sequelize.define(
     'MissaoUsuario', {
     id: {
         type: DataTypes.INTEGER,
@@ -60,7 +60,7 @@ exports.install = async (req, res) => {
         await missoes[0].addUsuario(usuarios[0], { through: { eh_mestre: true } })
         await missoes[0].addUsuario(usuarios[1], { through: { eh_mestre: false } })
         await missoes[0].addUsuario(usuarios[2], { through: { eh_mestre: false } })
-        await missoes[1].addUsuario(usuarios[3], { through: { eh_mestre: false } })
+        await missoes[0].addUsuario(usuarios[3], { through: { eh_mestre: false } })
         
         await missoes[1].addUsuario(usuarios[0], { through: { eh_mestre: true } })
         await missoes[1].addUsuario(usuarios[1], { through: { eh_mestre: false } })
