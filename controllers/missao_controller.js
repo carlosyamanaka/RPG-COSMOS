@@ -68,11 +68,11 @@ exports.get_missao = async (req, res) => {
 exports.update_missao = async (req, res) => {
     const { id } = req.params;
     try {
-        if (req.usuario.role == 'admin') {
-            //Apenas admins podem trocar o mestre da missão
-            const { nome, data, dificuldade, id_categoria, recompensa_em, recompensa_ec, relatorio, email_usuario } = req.body;
-
-            const mestre_missao = await Usuario.findByPk(email_usuario) //Mestre da missão que irá sofrer o update
+        const { nome, data, dificuldade, id_categoria, recompensa_em, recompensa_ec, relatorio, email_usuario } = req.body;
+        
+        //Apenas admins podem trocar o mestre da missão
+        //Mestres podem alterar os dados apenas da própria missão
+        if (req.usuario.role == 'admin' || req.usuario.email_usuario == email_usuario) {
 
             const missao = await Missao.findByPk(id);
 
@@ -82,21 +82,7 @@ exports.update_missao = async (req, res) => {
 
             await missao.update({ nome, data, dificuldade, id_categoria, recompensa_em, recompensa_ec, relatorio });
 
-            res.status(200).json({ message: 'Produto atualizado com sucesso!', missao });
-        } else if (req.usuario.email == mestre_missao) {
-            //Não dá pra mestres trocarem o mestre da missão
-            const { nome, data, dificuldade, id_categoria, recompensa_em, recompensa_ec, relatorio } = req.body;
-            const { email_usuario } = req.usuario.email_usuario;
-
-            const missao = await Missao.findByPk(id);
-
-            if (!missao) {
-                return res.status(404).json({ error: 'Missao não encontrada.' });
-            }
-
-            await missao.update({ nome, data, dificuldade, id_categoria, recompensa_em, recompensa_ec, relatorio, email_usuario });
-
-            res.status(200).json({ message: 'Produto atualizado com sucesso!', missao });
+            res.status(200).json({ message: 'Missão atualizada com sucesso!', missao });
         } else {
             return res.status(401).json({ error: 'Apenas administradores e o mestre da missão pode editá-la.' });
         }
