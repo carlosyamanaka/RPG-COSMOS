@@ -1,0 +1,1803 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "version": "1.0.0",
+    "title": "REST API",
+    "description": ""
+  },
+  "host": "localhost:3000",
+  "basePath": "/",
+  "schemes": [
+    "http"
+  ],
+  "paths": {
+    "/usuario/register": {
+      "post": {
+        "tags": [
+          "Usuários"
+        ],
+        "summary": "Registra um novo usuário",
+        "description": "Endpoint para registrar um novo usuário.",
+        "parameters": [
+          {
+            "name": "obj",
+            "in": "body",
+            "description": "Dados do usuário a ser registrado",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "email_usuario": {
+                  "type": "string",
+                  "example": "string"
+                },
+                "senha": {
+                  "type": "string",
+                  "example": "string"
+                }
+              },
+              "required": [
+                "email_usuario",
+                "senha"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Usuário registrado com sucesso.",
+            "schema": {
+              "$ref": "#/definitions/Usuario"
+            }
+          },
+          "400": {
+            "description": "Erro ao registrar o usuário.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string",
+                  "example": "string"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "401": {
+            "description": "Já existe um usuário com esse email.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string",
+                  "example": "string"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/usuario/login": {
+      "get": {
+        "tags": [
+          "Usuários"
+        ],
+        "summary": "Realiza login de um usuário",
+        "description": "Endpoint para realizar o login de um usuário e gerar um token de acesso.",
+        "parameters": [
+          {
+            "name": "obj",
+            "in": "body",
+            "description": "Credenciais do usuário",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "email_usuario": {
+                  "type": "string",
+                  "example": "string"
+                },
+                "senha": {
+                  "type": "string",
+                  "example": "string"
+                }
+              },
+              "required": [
+                "email_usuario",
+                "senha"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Login realizado com sucesso.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "string",
+                  "example": "boolean"
+                },
+                "token": {
+                  "type": "string",
+                  "example": "string"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "403": {
+            "description": "Credenciais inválidas.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "string",
+                  "example": "boolean"
+                },
+                "mensagem": {
+                  "type": "string",
+                  "example": "string"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "500": {
+            "description": "Erro ao realizar o login.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string",
+                  "example": "string"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/usuario/update/{email_usuario}": {
+      "put": {
+        "tags": [
+          "Usuários"
+        ],
+        "summary": "Atualiza os dados de um usuário",
+        "description": "Endpoint para atualizar os dados de um usuário existente.",
+        "parameters": [
+          {
+            "name": "email_usuario",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Email do usuário a ser atualizado"
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          },
+          {
+            "name": "obj",
+            "in": "body",
+            "description": "Novos dados do usuário",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "senha": {
+                  "type": "string",
+                  "example": "string"
+                },
+                "saldo_em": {
+                  "type": "string",
+                  "example": "number"
+                },
+                "saldo_ec": {
+                  "type": "string",
+                  "example": "number"
+                },
+                "quantidade_missoes_mestradas": {
+                  "type": "string",
+                  "example": "number"
+                },
+                "saldo_pm": {
+                  "type": "string",
+                  "example": "number"
+                },
+                "data_ingresso_mestre": {
+                  "type": "string",
+                  "example": "string"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Usuário atualizado com sucesso.",
+            "schema": {
+              "$ref": "#/definitions/Usuario"
+            }
+          },
+          "401": {
+            "description": "Não autorizado.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string",
+                  "example": "string"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Usuário não encontrado.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string",
+                  "example": "string"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "500": {
+            "description": "Erro ao atualizar o usuário.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string",
+                  "example": "string"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/usuario/updateRole/{email_usuario}": {
+      "put": {
+        "tags": [
+          "Usuários"
+        ],
+        "summary": "Atualiza o papel (role) de um usuário",
+        "description": "Endpoint para atualizar o papel (role) de um usuário.",
+        "parameters": [
+          {
+            "name": "email_usuario",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Email do usuário a ser atualizado"
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          },
+          {
+            "name": "obj",
+            "in": "body",
+            "description": "Novo papel do usuário",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "role": {
+                  "type": "string",
+                  "example": "string"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Papel do usuário atualizado com sucesso.",
+            "schema": {
+              "$ref": "#/definitions/Usuario"
+            }
+          },
+          "401": {
+            "description": "Não autorizado.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string",
+                  "example": "string"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Usuário não encontrado.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string",
+                  "example": "string"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "500": {
+            "description": "Erro ao atualizar o papel do usuário.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string",
+                  "example": "string"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/usuario/delete/{email_usuario}": {
+      "delete": {
+        "tags": [
+          "Usuários"
+        ],
+        "summary": "Deleta um usuário",
+        "description": "Endpoint para deletar um usuário.",
+        "parameters": [
+          {
+            "name": "email_usuario",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Email do usuário a ser deletado"
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Usuário deletado com sucesso.",
+            "schema": {
+              "$ref": "#/definitions/Usuario"
+            }
+          },
+          "401": {
+            "description": "Não autorizado.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string",
+                  "example": "string"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Usuário não encontrado.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string",
+                  "example": "string"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "500": {
+            "description": "Erro ao deletar o usuário.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string",
+                  "example": "string"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/usuario/deleteByAdmin/{email_usuario}": {
+      "delete": {
+        "tags": [
+          "Usuários"
+        ],
+        "summary": "Deleta um usuário como administrador",
+        "description": "Endpoint para um administrador deletar um usuário.",
+        "parameters": [
+          {
+            "name": "email_usuario",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Email do usuário a ser deletado"
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Usuário deletado com sucesso.",
+            "schema": {
+              "$ref": "#/definitions/Usuario"
+            }
+          },
+          "401": {
+            "description": "Não autorizado.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string",
+                  "example": "string"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Usuário não encontrado.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string",
+                  "example": "string"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "500": {
+            "description": "Erro ao deletar o usuário.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string",
+                  "example": "string"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/usuario/registerAdmin": {
+      "post": {
+        "tags": [
+          "Usuários"
+        ],
+        "summary": "Registra um novo administrador",
+        "description": "Endpoint para registrar um novo administrador.",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          },
+          {
+            "name": "obj",
+            "in": "body",
+            "description": "Dados do administrador a ser registrado",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "email_usuario": {
+                  "type": "string",
+                  "example": "string"
+                },
+                "senha": {
+                  "type": "string",
+                  "example": "string"
+                }
+              },
+              "required": [
+                "email_usuario",
+                "senha"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Administrador registrado com sucesso.",
+            "schema": {
+              "$ref": "#/definitions/Usuario"
+            }
+          },
+          "400": {
+            "description": "Erro ao registrar o administrador.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string",
+                  "example": "string"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "401": {
+            "description": "Não autorizado.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string",
+                  "example": "string"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        }
+      }
+    },
+    "/usuario/get/{email_usuario}": {
+      "get": {
+        "tags": [
+          "Usuários"
+        ],
+        "summary": "Obtém as informações de um usuário",
+        "description": "Endpoint para obter as informações de um usuário específico.",
+        "parameters": [
+          {
+            "name": "email_usuario",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Email do usuário a ser consultado"
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Informações do usuário obtidas com sucesso.",
+            "schema": {
+              "$ref": "#/definitions/Usuario"
+            }
+          },
+          "201": {
+            "description": "Created"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "500": {
+            "description": "Erro ao obter as informações do usuário.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string",
+                  "example": "string"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/usuario/getAll": {
+      "get": {
+        "tags": [
+          "Usuários"
+        ],
+        "summary": "Obtém todos os usuários",
+        "description": "Endpoint para obter todos os usuários cadastrados.",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          },
+          {
+            "name": "limite",
+            "in": "query",
+            "description": "Número de usuários a serem retornados por página",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "pagina",
+            "in": "query",
+            "description": "Número da página a ser retornada",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "description",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "schema",
+            "in": "query",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Usuários obtidos com sucesso.",
+            "schema": {
+              "$ref": "#/definitions/Usuario"
+            }
+          },
+          "201": {
+            "description": "Created"
+          },
+          "400": {
+            "description": "Erro nos parâmetros de consulta.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string",
+                  "example": "string"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "500": {
+            "description": "Erro ao obter os usuários.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string",
+                  "example": "string"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/missao/create": {
+      "post": {
+        "tags": [
+          "Missões"
+        ],
+        "summary": "Cria uma nova missão",
+        "description": "Endpoint para criar uma nova missão.",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Dados da missão a ser criada",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "nome": {
+                  "type": "string",
+                  "example": "string"
+                },
+                "data": {
+                  "type": "string",
+                  "example": "string"
+                },
+                "dificuldade": {
+                  "type": "string",
+                  "example": "string"
+                },
+                "id_categoria": {
+                  "type": "string",
+                  "example": "integer"
+                },
+                "recompensa_em": {
+                  "type": "string",
+                  "example": "integer"
+                },
+                "recompensa_ec": {
+                  "type": "string",
+                  "example": "integer"
+                },
+                "relatorio": {
+                  "type": "string",
+                  "example": "string"
+                },
+                "email_mestre": {
+                  "type": "string",
+                  "example": "string"
+                },
+                "email_participantes": {
+                  "type": "array",
+                  "example": [
+                    "string"
+                  ],
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Missão criada com sucesso.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "Missão criada com sucesso!"
+                },
+                "missao": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "number",
+                      "example": 1
+                    },
+                    "nome": {
+                      "type": "string",
+                      "example": "Missão Exemplo"
+                    }
+                  }
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "401": {
+            "description": "Apenas administradores e mestres podem criar missões.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string",
+                  "example": "Apenas administradores e mestres podem criar missões"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "500": {
+            "description": "Erro ao criar a missão.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string",
+                  "example": "Mensagem de erro"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/missao/get/{id}": {
+      "get": {
+        "tags": [
+          "Missões"
+        ],
+        "summary": "Obtém uma missão específica",
+        "description": "Endpoint para obter uma missão pelo ID.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "description": "ID da missão a ser obtida"
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Missão obtida com sucesso.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "number",
+                  "example": 1
+                },
+                "nome": {
+                  "type": "string",
+                  "example": "Missão Exemplo"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Missão não encontrada.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string",
+                  "example": "Missão não encontrada."
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "500": {
+            "description": "Erro ao obter a missão.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string",
+                  "example": "Mensagem de erro"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/missao/getAll": {
+      "get": {
+        "tags": [
+          "Missões"
+        ],
+        "summary": "Obtém todas as missões",
+        "description": "Endpoint para obter todas as missões com paginação.",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          },
+          {
+            "name": "limite",
+            "in": "query",
+            "description": "Número de missões por página (deve ser 5, 10 ou 30)",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "pagina",
+            "in": "query",
+            "description": "Número da página (deve ser maior que 0)",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "description",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "schema",
+            "in": "query",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Missões obtidas com sucesso.",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "number",
+                    "example": 1
+                  },
+                  "nome": {
+                    "type": "string",
+                    "example": "Missão Exemplo"
+                  }
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "500": {
+            "description": "Erro ao obter missões.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string",
+                  "example": "Mensagem de erro"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/missao/update/{id}": {
+      "put": {
+        "tags": [
+          "Missões"
+        ],
+        "summary": "Atualiza uma missão específica",
+        "description": "Endpoint para atualizar uma missão pelo ID.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "description": "ID da missão a ser atualizada"
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Dados da missão a ser atualizada",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "nome": {
+                  "type": "string",
+                  "example": "string"
+                },
+                "data": {
+                  "type": "string",
+                  "example": "string"
+                },
+                "dificuldade": {
+                  "type": "string",
+                  "example": "string"
+                },
+                "id_categoria": {
+                  "type": "string",
+                  "example": "integer"
+                },
+                "recompensa_em": {
+                  "type": "string",
+                  "example": "integer"
+                },
+                "recompensa_ec": {
+                  "type": "string",
+                  "example": "integer"
+                },
+                "relatorio": {
+                  "type": "string",
+                  "example": "string"
+                },
+                "email_usuario": {
+                  "type": "string",
+                  "example": "string"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Missão atualizada com sucesso.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "Missão atualizada com sucesso!"
+                },
+                "missao": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "number",
+                      "example": 1
+                    },
+                    "nome": {
+                      "type": "string",
+                      "example": "Missão Atualizada"
+                    }
+                  }
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "401": {
+            "description": "Apenas administradores e o mestre da missão podem editá-la.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string",
+                  "example": "Apenas administradores e o mestre da missão podem editá-la."
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Missão não encontrada.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string",
+                  "example": "Missao não encontrada."
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "500": {
+            "description": "Erro ao atualizar a missão.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string",
+                  "example": "Mensagem de erro"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/missao/delete/{id}": {
+      "delete": {
+        "tags": [
+          "Missões"
+        ],
+        "summary": "Apaga uma missão específica",
+        "description": "Endpoint para apagar uma missão pelo ID.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "description": "ID da missão a ser apagada"
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Missão apagada com sucesso.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "Missão apagada com sucesso"
+                },
+                "missao": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "number",
+                      "example": 1
+                    },
+                    "nome": {
+                      "type": "string",
+                      "example": "Missão Exemplo"
+                    }
+                  }
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "401": {
+            "description": "Apenas administradores e o mestre da missão podem apagá-la.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string",
+                  "example": "Não autorizado"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Missão não encontrada.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string",
+                  "example": "Missão não encontrada"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "500": {
+            "description": "Erro ao apagar a missão.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string",
+                  "example": "Mensagem de erro"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/missao/getTotal": {
+      "get": {
+        "tags": [
+          "Missões"
+        ],
+        "summary": "Obtém o total de missões",
+        "description": "Endpoint para obter o número total de missões.",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Total de missões obtido com sucesso.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "total": {
+                  "type": "number",
+                  "example": 10
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "500": {
+            "description": "Erro ao obter o total de missões.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string",
+                  "example": "Mensagem de erro"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/missao/getTotalByCategoria/{id}": {
+      "get": {
+        "tags": [
+          "Missões"
+        ],
+        "summary": "Obtém o total de missões por categoria",
+        "description": "Endpoint para obter o número total de missões por categoria.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "description": "ID da categoria das missões a serem contadas"
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Total de missões por categoria obtido com sucesso.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "total": {
+                  "type": "number",
+                  "example": 5
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "500": {
+            "description": "Erro ao obter o total de missões por categoria.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string",
+                  "example": "Mensagem de erro"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/categoria/create": {
+      "post": {
+        "tags": [
+          "Categorias"
+        ],
+        "summary": "Cria uma categoria específica",
+        "description": "Endpoint para criar uma categoria.",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Dados da categoria a ser criada",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "nome": {
+                  "type": "string",
+                  "example": "string"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Categoria criada com sucesso.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "Categoria criada!"
+                },
+                "categoria": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "number",
+                      "example": 1
+                    },
+                    "nome": {
+                      "type": "string",
+                      "example": "Exemplo"
+                    }
+                  }
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "400": {
+            "description": "Erro ao criar categoria.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string",
+                  "example": "Mensagem de erro"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "401": {
+            "description": "Sem permissão de administrador.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string",
+                  "example": "Apenas administradores podem criar categorias."
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        }
+      }
+    },
+    "/categoria/get/{id}": {
+      "get": {
+        "tags": [
+          "Categorias"
+        ],
+        "summary": "Obtém uma categoria específica",
+        "description": "Endpoint para obter uma categoria pelo ID.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "description": "ID da categoria a ser obtida"
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Categoria obtida com sucesso.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "number",
+                  "example": 1
+                },
+                "nome": {
+                  "type": "string",
+                  "example": "Exemplo"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "400": {
+            "description": "Erro ao obter categoria.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string",
+                  "example": "Mensagem de erro"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Categoria não encontrada.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string",
+                  "example": "Categoria não encontrada."
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/categoria/update/{id}": {
+      "put": {
+        "tags": [
+          "Categorias"
+        ],
+        "summary": "Atualiza uma categoria específica",
+        "description": "Endpoint para atualizar uma categoria pelo ID.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "description": "ID da categoria a ser atualizada"
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Dados da categoria a ser atualizada",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "nome": {
+                  "type": "string",
+                  "example": "string"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Categoria atualizada com sucesso.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "Categoria atualizada!"
+                },
+                "categoria": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "number",
+                      "example": 1
+                    },
+                    "nome": {
+                      "type": "string",
+                      "example": "Exemplo Atualizado"
+                    }
+                  }
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "400": {
+            "description": "Erro ao atualizar categoria.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string",
+                  "example": "Mensagem de erro"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "401": {
+            "description": "Sem permissão de administrador.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string",
+                  "example": "Apenas administradores podem editar categorias."
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Categoria não encontrada.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string",
+                  "example": "Categoria não encontrada."
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/categoria/delete/{id}": {
+      "delete": {
+        "tags": [
+          "Categorias"
+        ],
+        "summary": "Apaga uma categoria específica",
+        "description": "Endpoint para apagar uma categoria pelo ID.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "description": "ID da categoria a ser apagada"
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Categoria apagada com sucesso.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "Categoria apagada!"
+                },
+                "categoria": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "number",
+                      "example": 1
+                    },
+                    "nome": {
+                      "type": "string",
+                      "example": "Exemplo"
+                    }
+                  }
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "400": {
+            "description": "Erro ao apagar categoria.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string",
+                  "example": "Mensagem de erro"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "401": {
+            "description": "Sem permissão de administrador.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string",
+                  "example": "Apenas administradores podem apagar categorias."
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Categoria não encontrada.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string",
+                  "example": "Categoria não encontrada."
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/install/": {
+      "get": {
+        "description": "",
+        "responses": {
+          "201": {
+            "description": "Created"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    }
+  }
+}

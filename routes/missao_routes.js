@@ -8,5 +8,7 @@ router.get("/get/:id", authenticate, missao_controller.get_missao);
 router.get("/getAll", authenticate, missao_controller.get_all_missoes);
 router.put("/update/:id", authenticate, missao_controller.update_missao);
 router.delete("/delete/:id", authenticate, missao_controller.delete_missao);
+router.get("/getTotal", authenticate, missao_controller.get_total_missoes);
+router.get("/getTotalByCategoria/:id", authenticate, missao_controller.get_total_missoes_by_categoria);
 
 module.exports = router
