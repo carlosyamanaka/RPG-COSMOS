@@ -20,6 +20,10 @@ Este projeto é um software desenvolvido para gerenciar missões em um servidor 
 - **Postgres:** Banco de dados utilizado para persistência dos dados durante o desenvolvimento.
 - **Swagger:** Documentação automática de APIs RESTful.
 
+# Modelagem do banco de dados
+![image](https://github.com/user-attachments/assets/9fd03c38-da14-436a-be31-ac647298c0ac)
+
+
 ## 📂 Estrutura do Projeto
 
 ```bash
