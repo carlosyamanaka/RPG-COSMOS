@@ -21,6 +21,6 @@ app.use('/missao', missao_router)
 app.use('/categoria', categoria_router)
 app.use('/install', install_router)
 
-app.use('/api-doc', swaggerUi.serve, swaggerUi.setup(swaggerFile))
+app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerFile))
 
 module.exports = app;

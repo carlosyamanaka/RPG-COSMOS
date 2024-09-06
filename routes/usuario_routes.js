@@ -3,9 +3,9 @@ const router = express.Router()
 const usuario_controller = require('../controllers/usuario_controller')
 const authenticate = require('../middleware/authenticate')
 
-/*
-#swagger.path = '/usuario' 
-*/
+// Novos jogadores utilizam a rota register e login para criar a conta e receber o token de autenticação
+// Jogadores não admin podem recuperar informações
+// Administradores tem permissão de utilizar totalmente as funcionalidades das rotas
 router.post("/register", usuario_controller.register_usuario);
 router.get("/login", usuario_controller.login_usuario);
 router.put("/update/:email_usuario", authenticate, usuario_controller.update_usuario);
