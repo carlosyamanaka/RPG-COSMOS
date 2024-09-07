@@ -57,9 +57,11 @@ Inicie o servidor:
 
 **DELETE** `/missao/delete/:id`: Remoção de uma missão.
 
-**GET** `/missao/getTotal`: Obtenção do total de missões.
+**GET** `/missao/getAllByUsuarioLogado`: Obtenção das missões mestradas pelo usuário logado atualmente.
 
-**GET** `/missao/getTotalByCategoria/:id`: Obtenção do total de missões por categoria.
+**GET** `/missao/getQuantidade`: Obtenção do total de missões.
+
+**GET** `/missao/getQuantidadeByCategoria/:id`: Obtenção do total de missões por categoria.
 
 
 

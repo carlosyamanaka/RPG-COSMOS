@@ -4,7 +4,7 @@ const Categoria = require('../models/Categoria');
 const Missao = require('../models/Missao');
 const Usuario = require('../models/Usuario');
 
-//Ligação N:N Missão - Usuário
+//Ligação N:M Missão - Usuário
 exports.MissaoUsuario = sequelize.define(
     'MissaoUsuario', {
     id: {

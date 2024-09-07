@@ -211,7 +211,7 @@ exports.update_role = async (req, res) => {/*
             return res.status(401).json({ error: 'Não autorizado' });
         }
 
-        //Reatribui a nova role ou apenas deixa a antiga
+        //Reatribui a nova role ou apenas deixa a antiga se nada for passado
         usuario.role = role || usuario.role;
         await usuario.save();
 

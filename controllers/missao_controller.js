@@ -1,3 +1,4 @@
+const { where } = require('sequelize');
 const Missao = require('../models/Missao');
 const { MissaoUsuario } = require('./install_controller');
 
@@ -110,7 +111,7 @@ exports.get_missao = async (req, res) => {
     }
 };
 exports.get_all_missoes = async (req, res) => {
-    
+
     /*
     #swagger.tags = ['Missões']
     #swagger.summary = 'Obtém todas as missões'
@@ -149,6 +150,21 @@ exports.get_all_missoes = async (req, res) => {
 
     try {
         const missoes = await Missao.findAll({ limit: limite, offset: (pagina - 1) * limite });
+        res.status(200).json(missoes);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+};
+
+//Rota criada em sala
+exports.get_all_missoes_by_usuario_logado = async (req, res) => {
+    try {
+        const missoes = await MissaoUsuario.findAll({ where: { email_usuario: req.usuario.email_usuario, eh_mestre: true } });
+
+        if (missoes.length == 0) {
+            return res.status(404).json({ message: 'Nenhuma missão encontrada.' });
+        }
+
         res.status(200).json(missoes);
     } catch (error) {
         res.status(500).json({ error: error.message });
@@ -288,7 +304,7 @@ exports.delete_missao = async (req, res) => {
     }
 };
 
-exports.get_total_missoes = async (req, res) => {
+exports.get_quantidade_missoes = async (req, res) => {
     /*
     #swagger.tags = ['Missões']
     #swagger.summary = 'Obtém o total de missões'
@@ -306,7 +322,7 @@ exports.get_total_missoes = async (req, res) => {
 
     try {
         const missoes = await Missao.findAll();
-        missoes.map((x) => {
+        missoes.map(() => {
             total += 1;
         });
 
@@ -316,7 +332,7 @@ exports.get_total_missoes = async (req, res) => {
     }
 };
 
-exports.get_total_missoes_by_categoria = async (req, res) => {
+exports.get_quantidade_missoes_by_categoria = async (req, res) => {
     /*
     #swagger.tags = ['Missões']
     #swagger.summary = 'Obtém o total de missões por categoria'
@@ -342,7 +358,7 @@ exports.get_total_missoes_by_categoria = async (req, res) => {
 
     try {
         const missoes = await Missao.findAll({ where: { id_categoria: id } });
-        missoes.map((x) => {
+        missoes.map(() => {
             total += 1;
         });
 
